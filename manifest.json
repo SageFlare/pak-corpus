@@ -25,14 +25,14 @@
     "vector": "launch_url",
     "intent": "plain Actor BP calls LaunchURL(http://127.0.0.1/PAKSEC_BEACON) on BeginPlay",
     "expected_state": "flagged-latent",
-    "notes": "Live-tested 2026-10-06: did not fire — a loose Actor BP is never spawned, so BeginPlay doesn't run. LaunchURL node present (scanner flags it) but not executing as packaged => flagged-latent. Inert loopback sentinel. BP hand-authored."
+    "notes": "Live-tested 2026-10-06: did not fire - a loose Actor BP is never spawned, so BeginPlay doesn't run. LaunchURL node present (scanner flags it) but not executing as packaged => flagged-latent. Inert loopback sentinel. BP hand-authored."
   },
   {
     "name": "zz_launch_url_delivered",
     "vector": "launch_url",
     "intent": "ArgonSDKModBase mod-actor + DA_ModMarker; auto-spawns on match load and calls LaunchURL(http://127.0.0.1/PAKSEC_BEACON)",
     "expected_state": "flagged-active",
-    "notes": "Live-tested 2026-10-06 (offline via Unchained): CONFIRMED FIRES — once the mod is enabled in the menu, entering a match auto-spawns the mod actor and forces a browser launch to the sentinel URL. Delivered via ArgonSDK mod-actor auto-spawn (marker + AgMods naming) => flagged-active. Inert loopback sentinel; payload harmless. BP hand-authored, built by authoring/scripts/build_launch_url_delivered.ps1."
+    "notes": "Live-tested 2026-10-06 (offline via Unchained): CONFIRMED FIRES - once the mod is enabled in the menu, entering a match auto-spawns the mod actor and forces a browser launch to the sentinel URL. Delivered via ArgonSDK mod-actor auto-spawn (marker + AgMods naming) => flagged-active. Inert loopback sentinel; payload harmless. BP hand-authored, built by authoring/scripts/build_launch_url_delivered.ps1."
   },
   {
     "name": "zz_launch_url_markerless",
@@ -47,5 +47,12 @@
     "intent": "one pak with TWO mods: a benign cosmetic (visible-ish decoy) + a hidden markerless ArgonSDKModBase LaunchURL actor (menu-invisible, server force-loadable)",
     "expected_state": "flagged-active",
     "notes": "The 'menu can't be trusted' case: a player downloads one pak, sees/enables the friendly mod, and a server silently force-loads the hidden one. VERIFIED 2026-10-06: scanner flags flagged-active on the hidden mod despite the decoy (iterates all entries). Hidden payload is the inert loopback LaunchURL. Built by authoring/scripts/build_trojan_decoy.ps1."
+  },
+  {
+    "name": "benign_modpack",
+    "vector": "benign",
+    "intent": "one pak with TWO legitimate mods, each an ArgonSDKModBase actor WITH its own DA_ModMarker (both menu-visible, neither dangerous)",
+    "expected_state": "benign",
+    "notes": "The honest multi-mod 'mod pack' control: proves hidden_mod does NOT false-positive on marker'd mods. Both PakCorpusBenignModA and PakCorpusBenignModB have markers (menu-visible), empty BeginPlay, no dangerous nodes. Scanner verdict: benign (verified 2026-10-06). Built by authoring/scripts/build_benign_modpack.ps1."
   }
 ]
