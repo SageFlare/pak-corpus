@@ -40,5 +40,12 @@
     "intent": "same ArgonSDKModBase LaunchURL actor as zz_launch_url_delivered but with NO DA_ModMarker in the pak",
     "expected_state": "flagged-active",
     "notes": "Markerless variant. Live-confirmed 2026-10-06: absent from the Mod Manager menu (marker drives GUI discoverability). Firing is MECHANISM-VERIFIED end-to-end (not observed live): launcher Server config NextMapModActors -> game arg --next-map-mod-actors (IChivalry2Launcher.cs:108) -> loader resolves by AgMods convention path and spawns the ArgonSDKModBase actor (BPF_ModLoading) -> BeginPlay LaunchURL. Delivery is server-push (a server force-loads it onto connecting clients), not player opt-in. Scanner flags flagged-active via IsAgModsConventionPath. Full live firing would need a local Unchained headless server. Built by authoring/scripts/build_launch_url_markerless.ps1; inert loopback sentinel."
+  },
+  {
+    "name": "trojan_decoy",
+    "vector": "launch_url",
+    "intent": "one pak with TWO mods: a benign cosmetic (visible-ish decoy) + a hidden markerless ArgonSDKModBase LaunchURL actor (menu-invisible, server force-loadable)",
+    "expected_state": "flagged-active",
+    "notes": "The 'menu can't be trusted' case: a player downloads one pak, sees/enables the friendly mod, and a server silently force-loads the hidden one. VERIFIED 2026-10-06: scanner flags flagged-active on the hidden mod despite the decoy (iterates all entries). Hidden payload is the inert loopback LaunchURL. Built by authoring/scripts/build_trojan_decoy.ps1."
   }
 ]
