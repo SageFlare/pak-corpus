@@ -2,7 +2,7 @@ import json
 import re
 import os
 
-STATES = {"benign", "attempted", "malicious"}
+STATES = {"benign", "flagged-latent", "flagged-active"}
 VECTORS = {"asset_replacement", "launch_url", "benign"}
 _REQUIRED = {"name", "vector", "intent", "expected_state", "notes"}
 _ABS = re.compile(r"[A-Za-z]:\\|/Users/|/home/")

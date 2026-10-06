@@ -42,5 +42,5 @@ def test_absolute_path_in_field_is_error(tmp_path):
 
 
 def test_states_and_vectors_known_sets():
-    assert STATES == {"benign", "attempted", "malicious"}
+    assert STATES == {"benign", "flagged-latent", "flagged-active"}
     assert {"asset_replacement", "launch_url", "benign"} <= VECTORS
