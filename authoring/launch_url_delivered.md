@@ -25,7 +25,12 @@ paks it. Follow Field Guide T3 ("Create your first Blueprint Mod") — this mirr
    - Connect BeginPlay exec → LaunchURL exec.
 5. **Compile** then **Save**.
 
-## 2. Create the Mod Marker (manual)
+## 2. Create the Mod Marker (manual) — REQUIRED
+
+The `DA_ModMarker` is what the Unchained mod loader scans for to decide which actors to
+auto-spawn. **Without it in the pak, the actor never spawns and LaunchURL never fires** (this is
+the #1 reason a delivered sample silently does nothing). It must be in the same mod folder so it
+gets cooked and paked.
 
 1. In the same folder, right-click → **Miscellaneous → Data Asset** → class **`DA_ModMarker`**.
    Name it `ModMarker`.
