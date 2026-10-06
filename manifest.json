@@ -39,6 +39,6 @@
     "vector": "launch_url",
     "intent": "same ArgonSDKModBase LaunchURL actor as zz_launch_url_delivered but with NO DA_ModMarker in the pak",
     "expected_state": "flagged-active",
-    "notes": "Markerless variant proving the loader auto-spawns by AgMods name/path convention (verified from BPF_ModLoading), not by marker presence. Scanner detects it flagged-active via IsAgModsConventionPath. Live-confirmation of the markerless spawn pending (blueprint-derived). Built by authoring/scripts/build_launch_url_markerless.ps1; inert loopback sentinel."
+    "notes": "Markerless variant: loader auto-spawns by AgMods name/path convention (verified from BPF_ModLoading), not marker presence. Live-tested 2026-10-06: does NOT appear in the Mod Manager menu (marker drives GUI discoverability), but is force-loadable by name via --next-map-mod-actors / servertravel ?mods= (so a server can push it onto clients). Scanner flags it flagged-active via IsAgModsConventionPath. Force-load firing confirmation pending (needs server/CLI). Built by authoring/scripts/build_launch_url_markerless.ps1; inert loopback sentinel."
   }
 ]
