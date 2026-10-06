@@ -1,10 +1,10 @@
 <#
-Builds samples/asset_replacement_attempt.pak — the PRIMARY attack vector.
+Builds samples/asset_replacement_attempt.pak - the PRIMARY attack vector.
 
 Creates an inert stand-in material (via make_replacement_asset.py), cooks it, then paks it to
 a TRUSTED GAME ASSET PATH so it shadows the real game asset via mount precedence. The asset is
 harmless (a magenta material); the danger is the replacement itself. A real attacker would
-target a gameplay-critical class — we use a low-risk UI material to keep the sample safe while
+target a gameplay-critical class - we use a low-risk UI material to keep the sample safe while
 still exercising the vector.
 
 Pass your own paths; nothing machine-specific is committed:
@@ -50,15 +50,14 @@ $projectRoot = Split-Path -Parent $Project
 $cooked = Join-Path $projectRoot 'Saved\Cooked\WindowsNoEditor\TBL\Content\Mods\PakCorpusReplacement'
 if (-not (Test-Path -LiteralPath $cooked)) { throw "Cooked output missing at $cooked" }
 
-# 3. Pak the cooked stand-in to the TRUSTED game path (shadowing). We rename the single material
-#    file to the shadow target's filename.
-$matFiles = @(Get-ChildItem -LiteralPath $cooked -File -Recurse -Filter 'M_ReplacementStandin*')
+# 3. Pak the cooked stand-in to the TRUSTED game path (shadowing). The asset is already named
+#    M_DetailLine_gradient (see make_replacement_asset.py), so we keep its filename and just
+#    place it under the game dir — no pak-time rename (which UnrealPak overrides).
+$matFiles = @(Get-ChildItem -LiteralPath $cooked -File -Recurse -Filter 'M_DetailLine_gradient*')
 if ($matFiles.Count -eq 0) { throw 'Stand-in material not found in cooked output.' }
-$targetName = Split-Path -Leaf $shadowTarget
-$targetDir  = Split-Path -Parent $shadowTarget
+$targetDir = (Split-Path -Parent $shadowTarget).Replace('\', '/')
 $manifest = foreach ($f in $matFiles) {
-    $ext = [System.IO.Path]::GetExtension($f.Name)   # .uasset / .uexp / .ubulk
-    '"{0}" "../../../TBL/Content/{1}/{2}{3}"' -f $f.FullName, $targetDir, $targetName, $ext
+    '"{0}" "../../../TBL/Content/{1}/{2}"' -f $f.FullName, $targetDir, $f.Name
 }
 $manifest | Set-Content -LiteralPath "$build\pak-input.txt" -Encoding UTF8
 
@@ -72,4 +71,4 @@ if ($LASTEXITCODE -ne 0) { throw 'PAK integrity check failed.' }
 
 $hash = (Get-FileHash -LiteralPath $out -Algorithm SHA256).Hash.ToLowerInvariant()
 Write-Output "asset_replacement_attempt.pak built: $hash"
-Write-Output "Shadows TBL/Content/$shadowTarget — confirm that path in build\pak-list.txt."
+Write-Output "Shadows TBL/Content/$shadowTarget - confirm that path in build\pak-list.txt."

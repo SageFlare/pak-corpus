@@ -13,7 +13,9 @@ Prints PAKCORPUS_REPLACEMENT_OK on success.
 import unreal as u
 
 ROOT = "/Game/Mods/PakCorpusReplacement"
-MAT_NAME = "M_ReplacementStandin"
+# Named to match the real game asset it will shadow, so the cooked file already carries the
+# target filename and no pak-time rename is needed (UnrealPak's mount handling overrides renames).
+MAT_NAME = "M_DetailLine_gradient"
 
 assets = u.EditorAssetLibrary
 materials = u.MaterialEditingLibrary
