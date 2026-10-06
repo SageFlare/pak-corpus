@@ -18,7 +18,7 @@
     "vector": "asset_replacement",
     "intent": "shadows the real game asset TBL/Content/UI/Materials/DetailLines/M_DetailLine_gradient with an inert magenta material",
     "expected_state": "attempted",
-    "notes": "Live-tested 2026-10-06 (offline via Unchained): no visible change — the magenta stand-in did NOT render; the game kept the original. Replacement attempt is in the file (scanner flags it) but did not deliver, likely due to main-pak load precedence and/or cooked-reference mismatch. State 'attempted', not 'malicious'. A precedence-winning, cook-matched variant would be needed for 'malicious'. Built by authoring/scripts/build_asset_replacement.ps1."
+    "notes": "Live-tested 2026-10-06 (offline via Unchained), twice: no visible change even with a precedence-winning zzz_ variant (loads last). So the blocker is NOT load precedence but cooked-reference mismatch — the hand-built stand-in doesn't match the game's cooked material identity, so the engine falls back to the original. Replacement intent is in the file (scanner flags it) but does not deliver without a cook-faithful asset. State 'attempted', not 'malicious'. Built by authoring/scripts/build_asset_replacement.ps1."
   },
   {
     "name": "launch_url_attempt",
