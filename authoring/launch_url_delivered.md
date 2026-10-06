@@ -25,12 +25,14 @@ paks it. Follow Field Guide T3 ("Create your first Blueprint Mod") — this mirr
    - Connect BeginPlay exec → LaunchURL exec.
 5. **Compile** then **Save**.
 
-## 2. Create the Mod Marker (manual) — REQUIRED
+## 2. Create the Mod Marker (manual) — OPTIONAL for spawn, useful for the menu
 
-The `DA_ModMarker` is what the Unchained mod loader scans for to decide which actors to
-auto-spawn. **Without it in the pak, the actor never spawns and LaunchURL never fires** (this is
-the #1 reason a delivered sample silently does nothing). It must be in the same mod folder so it
-gets cooked and paked.
+Correction (verified from the loader blueprint `BPF_ModLoading`): the in-game loader spawns the
+actor by **name/path convention** (`/Game/Mods/AgMods/<Name>/<Name>` resolved from the launcher
+mod list), NOT by scanning for a `DA_ModMarker`. So a marker is **not required** for the actor to
+auto-spawn and fire. The `DA_ModMarker` is consumed by the launcher's metadata/editor tooling
+(mod name/author/flags shown in the menu). Create it for a realistic mod; omit it to produce the
+**markerless** delivered variant (which also auto-spawns — see the markerless build below).
 
 1. In the same folder, right-click → **Miscellaneous → Data Asset** → class **`DA_ModMarker`**.
    Name it `ModMarker`.
