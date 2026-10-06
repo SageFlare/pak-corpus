@@ -10,18 +10,30 @@ Payload stays inert: point BrowseToUrl at the loopback sentinel `http://127.0.0.
 
 UE 4.25 Python can't wire BP graphs, so author the actor by hand; a script cooks + paks it.
 
-## 1. Create the mod actor (manual, editor)
+## 1. Create the mod actor + a UserWidget hosting the web view (manual, editor)
+
+NOTE: `UTBLWebWidget` is a primitive `UWidget` (not a UserWidget), so **Create Widget will NOT list
+it** (you'll only see "Cast To TBLWebWidget"). Primitive widgets are placed inside a UserWidget's
+Designer, then driven from that UserWidget's graph. Correct steps:
 
 1. Folder `Content/Mods/AgMods/PakCorpusWebWidget/`.
-2. Blueprint Class → parent **`ArgonSDKModBase`** → name `PakCorpusWebWidget` (match folder).
-3. Event Graph, on **Event BeginPlay**:
-   - **Create Widget** node → class **`TBLWebWidget`** (search "TBLWebWidget").
-   - Optionally set `ShowAddressBar = false` on it (stealth; not required for detection).
-   - Drag off the created widget → **BrowseToUrl** node → URL `http://127.0.0.1/PAKSEC_BEACON`.
-   - (You do NOT need to Add To Viewport — the fetch happens on BrowseToUrl regardless; leaving it
-     off-viewport is exactly the silent case.)
-4. Compile + Save.
-5. Add a `DA_ModMarker` named `PakCorpusWebWidget_Marker` (so it's menu-enableable for your test).
+2. **Create a UserWidget IN THIS SAME FOLDER** (`Content/Mods/AgMods/PakCorpusWebWidget/`, so the
+   build script paks it and the scanner sees the tokens): right-click → Blueprint Class → **Widget
+   Blueprint** → name `WBP_PakCorpusWeb`. Open it.
+3. In the **Designer**, from the Palette drag a **TBLWebWidget** onto the canvas (search "TBLWeb" in
+   the palette). Name it `WebView`. Optionally untick `ShowAddressBar` (stealth; not needed for
+   detection). Mark it **Is Variable** so the graph can reference it.
+4. In the UserWidget **Graph**, on **Event Construct**: drag the `WebView` variable → call
+   **BrowseToUrl** → URL `http://127.0.0.1/PAKSEC_BEACON`. Compile + Save.
+5. **Create the mod actor**: Blueprint Class → parent **`ArgonSDKModBase`** → name
+   `PakCorpusWebWidget` (match folder). On **Event BeginPlay**: **Create Widget** → class
+   `WBP_PakCorpusWeb` (now a UserWidget, so it IS listed). You do NOT need Add To Viewport — the
+   BrowseToUrl in Construct fires when the widget is constructed; leaving it off-viewport is exactly
+   the silent case. Compile + Save.
+6. Add a `DA_ModMarker` named `PakCorpusWebWidget_Marker` (so it's menu-enableable for your test).
+
+The scanner detects this regardless of path: `TBLWebWidget` / `BrowseToUrl` land in the WBP's name
+table, which the web_widget rule scans.
 
 ## 2. Cook + pak
 
