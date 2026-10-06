@@ -8,6 +8,13 @@ General safety:
 - Back up or note the original state first.
 - Install one sample at a time.
 - Always remove the sample pak **and** its `.sig` afterward to restore the game.
+- **Offline / own server only.** Chivalry 2 runs EasyAntiCheat. Loading modded paks is what
+  Unchained is designed for, but do these tests **offline or on your own server**, never on
+  official matchmaking, so anti-cheat never sees a modded session on your account.
+- These two samples are audited inert: the LaunchURL BP only opens
+  `http://127.0.0.1/PAKSEC_BEACON` (loopback, dead page — nothing leaves your PC); the
+  replacement is a cosmetic magenta material with no logic. Worst cases: a browser tab opens to
+  a localhost "can't connect" page, or some UI lines render magenta until you remove the pak.
 
 ## Install a sample
 

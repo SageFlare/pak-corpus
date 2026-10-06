@@ -25,6 +25,6 @@
     "vector": "launch_url",
     "intent": "Actor BP calls LaunchURL(http://127.0.0.1/PAKSEC_BEACON) on BeginPlay",
     "expected_state": "attempted",
-    "notes": "Provisional: scanner detects LaunchURL in the BP. malicious-vs-attempted to be confirmed by live test — whether the URL actually fires on load. Inert loopback sentinel. BP hand-authored, built by authoring/scripts/build_launch_url.ps1."
+    "notes": "Live-tested 2026-10-06 (offline via Unchained): did NOT fire — the loose BP is never spawned, so BeginPlay doesn't run. The LaunchURL node is present in the file (scanner flags it) but not delivered, so state is 'attempted', not 'malicious'. A delivered variant (BP placed in a loaded map) would be needed for 'malicious'. Inert loopback sentinel; BP hand-authored."
   }
 ]
