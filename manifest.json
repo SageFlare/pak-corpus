@@ -12,5 +12,19 @@
     "intent": "a cosmetic material added under the mod's own namespace",
     "expected_state": "benign",
     "notes": "mount ../../../TBL/Content/Mods/PakCorpusBenign/Materials/; 2 assets (unlit material); no asset replacement, no dangerous nodes. Built by authoring/scripts/build_benign_cosmetic.ps1."
+  },
+  {
+    "name": "asset_replacement_attempt",
+    "vector": "asset_replacement",
+    "intent": "shadows the real game asset TBL/Content/UI/Materials/DetailLines/M_DetailLine_gradient with an inert magenta material",
+    "expected_state": "attempted",
+    "notes": "Provisional: scanner detects the replacement (shadows trusted UI asset). malicious-vs-attempted to be confirmed by live test (docs/live-test.md) — whether the magenta stand-in actually appears in-game. Built by authoring/scripts/build_asset_replacement.ps1."
+  },
+  {
+    "name": "launch_url_attempt",
+    "vector": "launch_url",
+    "intent": "Actor BP calls LaunchURL(http://127.0.0.1/PAKSEC_BEACON) on BeginPlay",
+    "expected_state": "attempted",
+    "notes": "Provisional: scanner detects LaunchURL in the BP. malicious-vs-attempted to be confirmed by live test — whether the URL actually fires on load. Inert loopback sentinel. BP hand-authored, built by authoring/scripts/build_launch_url.ps1."
   }
 ]
