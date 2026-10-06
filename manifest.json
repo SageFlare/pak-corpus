@@ -18,7 +18,7 @@
     "vector": "asset_replacement",
     "intent": "shadows the real game asset TBL/Content/UI/Materials/DetailLines/M_DetailLine_gradient with an inert magenta material",
     "expected_state": "attempted",
-    "notes": "Provisional: scanner detects the replacement (shadows trusted UI asset). malicious-vs-attempted to be confirmed by live test (docs/live-test.md) — whether the magenta stand-in actually appears in-game. Built by authoring/scripts/build_asset_replacement.ps1."
+    "notes": "Live-tested 2026-10-06 (offline via Unchained): no visible change — the magenta stand-in did NOT render; the game kept the original. Replacement attempt is in the file (scanner flags it) but did not deliver, likely due to main-pak load precedence and/or cooked-reference mismatch. State 'attempted', not 'malicious'. A precedence-winning, cook-matched variant would be needed for 'malicious'. Built by authoring/scripts/build_asset_replacement.ps1."
   },
   {
     "name": "launch_url_attempt",
