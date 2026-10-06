@@ -54,5 +54,12 @@
     "intent": "one pak with TWO legitimate mods, each an ArgonSDKModBase actor WITH its own DA_ModMarker (both menu-visible, neither dangerous)",
     "expected_state": "benign",
     "notes": "The honest multi-mod 'mod pack' control: proves hidden_mod does NOT false-positive on marker'd mods. Both PakCorpusBenignModA and PakCorpusBenignModB have markers (menu-visible), empty BeginPlay, no dangerous nodes. Scanner verdict: benign (verified 2026-10-06). Built by authoring/scripts/build_benign_modpack.ps1."
+  },
+  {
+    "name": "zz_web_widget",
+    "vector": "web_widget",
+    "intent": "ArgonSDKModBase actor creates a UserWidget hosting TBLWebWidget.BrowseToUrl -> silent in-game URL fetch (no external browser)",
+    "expected_state": "flagged-active",
+    "notes": "The SILENT beacon vector: TBLWebWidget is an in-game web view (verified placeable in the UMG palette). BrowseToUrl fetches any URL inside the game with no browser tab and the address bar hideable -> IP leak + full web page (JS/trackers/drive-by), stealthier than LaunchURL. Actor at AgMods convention path auto-spawns and creates the widget on load => flagged-active (pak-level delivery). Inert loopback sentinel. Built by authoring/scripts/build_web_widget.ps1."
   }
 ]
