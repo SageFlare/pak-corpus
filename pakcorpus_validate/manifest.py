@@ -3,7 +3,7 @@ import re
 import os
 
 STATES = {"benign", "flagged-latent", "flagged-active"}
-VECTORS = {"asset_replacement", "launch_url", "benign"}
+VECTORS = {"asset_replacement", "launch_url", "web_widget", "benign"}
 _REQUIRED = {"name", "vector", "intent", "expected_state", "notes"}
 _ABS = re.compile(r"[A-Za-z]:\\|/Users/|/home/")
 
