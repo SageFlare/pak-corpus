@@ -21,15 +21,18 @@ BrowseToUrl in Construct never runs (this was the bug in the first attempt). Two
   visible appears. Construct then fires.
 Use (a) below.
 
-## Instrument with Print String checkpoints (to see exactly where it runs)
+## Instrument with Show Local Chat checkpoints (NOT Print String!)
 
-Add `Print String` nodes so a live test shows the execution path on-screen:
-- Actor BeginPlay, first node: Print "WW: actor BeginPlay"
-- After Create Widget: Print "WW: widget created"
-- After BrowseToUrl: Print "WW: after BrowseToUrl"
-Read which lines appear in-game: missing "actor BeginPlay" = actor didn't spawn; "created" but no
-"after BrowseToUrl" = the call path broke; all three present but no listener hit = BrowseToUrl ran
-but the in-game web view (CEF) did not fetch (vector present but neutered at runtime).
+`Print String` is **Development-only** — UE strips it from Shipping/Test cooks (which is how our
+paks are cooked, via the cook commandlet), so it shows nothing in a real build. Use **`Show Local
+Chat`** instead (wraps ClientReceiveLocalizedChat; BlueprintCallable, shipping-safe; the T3 "Hello
+World" node). It prints to the in-game chat box.
+- Actor BeginPlay, first node: Show Local Chat "WW: actor BeginPlay"
+- After Create Widget: Show Local Chat "WW: widget created"
+- After BrowseToUrl: Show Local Chat "WW: after BrowseToUrl"
+Read the in-game chat: missing "actor BeginPlay" = actor didn't spawn; "created" but no "after
+BrowseToUrl" = the call path broke; all three present but no listener hit = BrowseToUrl ran but the
+in-game web view (CEF) did not fetch (vector present but neutered at runtime).
 
 ## 1. Create the mod actor + a UserWidget hosting the web view (manual, editor)
 
