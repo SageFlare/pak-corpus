@@ -1,0 +1,16 @@
+[
+  {
+    "name": "benign_map",
+    "vector": "benign",
+    "intent": "a simple custom FFA map mod (The Box)",
+    "expected_state": "benign",
+    "notes": "mount ../../../TBL/Content/Mods/AgMods/TheBox/ (own namespace); 16 assets; no asset replacement, no dangerous nodes. Authored in ArgonSDK."
+  },
+  {
+    "name": "benign_cosmetic",
+    "vector": "benign",
+    "intent": "a cosmetic material added under the mod's own namespace",
+    "expected_state": "benign",
+    "notes": "mount ../../../TBL/Content/Mods/PakCorpusBenign/Materials/; 2 assets (unlit material); no asset replacement, no dangerous nodes. Built by authoring/scripts/build_benign_cosmetic.ps1."
+  }
+]
