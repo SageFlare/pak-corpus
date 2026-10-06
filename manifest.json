@@ -33,5 +33,12 @@
     "intent": "ArgonSDKModBase mod-actor + DA_ModMarker; auto-spawns on match load and calls LaunchURL(http://127.0.0.1/PAKSEC_BEACON)",
     "expected_state": "flagged-active",
     "notes": "Live-tested 2026-10-06 (offline via Unchained): CONFIRMED FIRES — once the mod is enabled in the menu, entering a match auto-spawns the mod actor and forces a browser launch to the sentinel URL. Delivered via ArgonSDK mod-actor auto-spawn (marker + AgMods naming) => flagged-active. Inert loopback sentinel; payload harmless. BP hand-authored, built by authoring/scripts/build_launch_url_delivered.ps1."
+  },
+  {
+    "name": "zz_launch_url_markerless",
+    "vector": "launch_url",
+    "intent": "same ArgonSDKModBase LaunchURL actor as zz_launch_url_delivered but with NO DA_ModMarker in the pak",
+    "expected_state": "flagged-active",
+    "notes": "Markerless variant proving the loader auto-spawns by AgMods name/path convention (verified from BPF_ModLoading), not by marker presence. Scanner detects it flagged-active via IsAgModsConventionPath. Live-confirmation of the markerless spawn pending (blueprint-derived). Built by authoring/scripts/build_launch_url_markerless.ps1; inert loopback sentinel."
   }
 ]
