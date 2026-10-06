@@ -10,6 +10,27 @@ Payload stays inert: point BrowseToUrl at the loopback sentinel `http://127.0.0.
 
 UE 4.25 Python can't wire BP graphs, so author the actor by hand; a script cooks + paks it.
 
+## IMPORTANT: Event Construct only fires when the widget is ADDED TO VIEWPORT
+
+A UserWidget's `Event Construct` does NOT run just because the widget was created — it fires when
+the widget is added to the viewport. If the actor only Creates the widget and never adds it, the
+BrowseToUrl in Construct never runs (this was the bug in the first attempt). Two fixes:
+- **(a) Call BrowseToUrl from the ACTOR**, right after Create Widget, instead of from the widget's
+  Construct. No viewport needed. Cleanest, and matches the stealth case (nothing shown).
+- **(b) Add To Viewport** but make the TBLWebWidget zero-size / offscreen / collapsed so nothing
+  visible appears. Construct then fires.
+Use (a) below.
+
+## Instrument with Print String checkpoints (to see exactly where it runs)
+
+Add `Print String` nodes so a live test shows the execution path on-screen:
+- Actor BeginPlay, first node: Print "WW: actor BeginPlay"
+- After Create Widget: Print "WW: widget created"
+- After BrowseToUrl: Print "WW: after BrowseToUrl"
+Read which lines appear in-game: missing "actor BeginPlay" = actor didn't spawn; "created" but no
+"after BrowseToUrl" = the call path broke; all three present but no listener hit = BrowseToUrl ran
+but the in-game web view (CEF) did not fetch (vector present but neutered at runtime).
+
 ## 1. Create the mod actor + a UserWidget hosting the web view (manual, editor)
 
 NOTE: `UTBLWebWidget` is a primitive `UWidget` (not a UserWidget), so **Create Widget will NOT list
@@ -23,13 +44,19 @@ Designer, then driven from that UserWidget's graph. Correct steps:
 3. In the **Designer**, from the Palette drag a **TBLWebWidget** onto the canvas (search "TBLWeb" in
    the palette). Name it `WebView`. Optionally untick `ShowAddressBar` (stealth; not needed for
    detection). Mark it **Is Variable** so the graph can reference it.
-4. In the UserWidget **Graph**, on **Event Construct**: drag the `WebView` variable → call
-   **BrowseToUrl** → URL `http://127.0.0.1/PAKSEC_BEACON`. Compile + Save.
+4. In the UserWidget **Graph**: add a **BlueprintCallable custom event or function** `DoBrowse`
+   that calls `WebView -> BrowseToUrl(http://127.0.0.1:8080/PAKSEC_BEACON)`. (Do NOT rely on Event
+   Construct — see the IMPORTANT note above.) Compile + Save.
 5. **Create the mod actor**: Blueprint Class → parent **`ArgonSDKModBase`** → name
-   `PakCorpusWebWidget` (match folder). On **Event BeginPlay**: **Create Widget** → class
-   `WBP_PakCorpusWeb` (now a UserWidget, so it IS listed). You do NOT need Add To Viewport — the
-   BrowseToUrl in Construct fires when the widget is constructed; leaving it off-viewport is exactly
-   the silent case. Compile + Save.
+   `PakCorpusWebWidget` (match folder). On **Event BeginPlay**:
+   - Print String "WW: actor BeginPlay"
+   - **Create Widget** → class `WBP_PakCorpusWeb` → promote the return to a variable `W`.
+   - Print String "WW: widget created"
+   - Call `W -> DoBrowse` (the function from step 4) — this runs BrowseToUrl without needing the
+     widget on screen.
+   - Print String "WW: after BrowseToUrl"
+   Compile + Save. (If `DoBrowse` is awkward, alternatively drag the created widget `W` -> get
+   `WebView` (mark it Is Variable + public) -> BrowseToUrl directly from the actor graph.)
 6. Add a `DA_ModMarker` named `PakCorpusWebWidget_Marker` (so it's menu-enableable for your test).
 
 The scanner detects this regardless of path: `TBLWebWidget` / `BrowseToUrl` land in the WBP's name
