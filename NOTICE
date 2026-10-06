@@ -1,0 +1,8 @@
+pak-corpus — Chivalry 2 pen-test pak corpus
+
+Samples authored with ArgonSDK (the Chivalry 2 modding SDK).
+Part of a defensive-security toolset alongside pak-scanner and pak-benchmark,
+which build on Chivalry 2 Unchained tooling (UnchainedLauncher, GPLv3) and
+CUE4Parse (MIT).
+
+Licensed under the GNU General Public License v3.0. See LICENSE.
