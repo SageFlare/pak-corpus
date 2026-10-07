@@ -33,6 +33,13 @@ python -m pip install -e ".[dev]"
 pak-corpus-validate
 ```
 
+## Reflection: Chiv2's dangerous BlueprintCallable surface
+
+`reflection/DANGEROUS_NODES.md` lists the dangerous BP-callable nodes a mod can reach (parsed from
+headers by `authoring/scripts/extract_bp_callable.py`), each marked **dev-only** (stripped from
+Shipping, unlikely usable) or shipping-live. Full data in `reflection/bp_callable.json`. This is how
+we find vectors to add scanner rules for.
+
 ## License
 
 GPLv3 (see [LICENSE](LICENSE)) — this project builds on GPLv3 Chivalry 2 Unchained tooling.
