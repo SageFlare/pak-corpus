@@ -59,7 +59,7 @@
     "name": "zz_web_widget",
     "vector": "web_widget",
     "intent": "ArgonSDKModBase actor creates a UserWidget hosting TBLWebWidget.BrowseToUrl -> silent in-game URL fetch (no external browser)",
-    "expected_state": "flagged-active",
-    "notes": "The SILENT beacon vector: TBLWebWidget is an in-game web view (verified placeable in the UMG palette). BrowseToUrl fetches any URL inside the game with no browser tab and the address bar hideable -> IP leak + full web page (JS/trackers/drive-by), stealthier than LaunchURL. Actor at AgMods convention path auto-spawns and creates the widget on load => flagged-active (pak-level delivery). Inert loopback sentinel. Built by authoring/scripts/build_web_widget.ps1."
+    "expected_state": "flagged-latent",
+    "notes": "SILENT web-view vector, LIVE-TESTED 2026-10-06 and found INERT in retail: a mod actor auto-spawned, created the UserWidget, and BrowseToUrl RAN (all 3 Show Local Chat checkpoints fired) but the loopback listener logged NOTHING -> the embedded web view (CEF) is stripped/disabled in shipping Chiv2, so BrowseToUrl makes no request. Capability present but does not execute in retail => flagged-latent. Scanner flags web_widget (lower confidence than launch_url, which DID fire live). Still a concern if a build enables CEF. Built by authoring/scripts/build_web_widget.ps1; inert loopback sentinel."
   }
 ]
